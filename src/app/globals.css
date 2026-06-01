@@ -1,0 +1,92 @@
+/* src/app/globals.css */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-primary:   #0f1117;
+  --bg-secondary: #151822;
+  --bg-card:      rgba(26,31,46,0.85);
+  --cyan:         #22d3ee;
+  --cyan-glow:    rgba(34,211,238,0.15);
+  --border:       rgba(34,211,238,0.18);
+  --border-card:  rgba(255,255,255,0.07);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg-primary);
+  color: white;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Minecraft background overlay */
+.mc-bg {
+  position: fixed;
+  inset: 0;
+  background-image: url('https://wallpapercave.com/wp/wp12221024.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  z-index: 0;
+}
+.mc-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+    rgba(15,17,23,0.85) 0%,
+    rgba(15,17,23,0.78) 40%,
+    rgba(15,17,23,0.88) 100%);
+}
+
+/* Cards */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: 16px;
+  backdrop-filter: blur(12px);
+}
+
+/* Cyan glow effect */
+.cyan-glow {
+  box-shadow: 0 0 24px rgba(34,211,238,0.2);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(34,211,238,0.3); border-radius: 99px; }
+
+/* Clerk overrides */
+.cl-rootBox, .cl-card { background: #1a1f2e !important; border: 1px solid rgba(255,255,255,0.08) !important; }
+.cl-headerTitle, .cl-headerSubtitle { color: white !important; }
+.cl-socialButtonsBlockButton {
+  background: rgba(255,255,255,0.05) !important;
+  border: 1px solid rgba(255,255,255,0.1) !important;
+  color: white !important;
+}
+.cl-formButtonPrimary { background: #22d3ee !important; color: #000 !important; font-weight: 700 !important; }
+.cl-formFieldInput {
+  background: #0f1117 !important;
+  border: 1px solid rgba(255,255,255,0.1) !important;
+  color: white !important;
+}
+.cl-footerActionLink { color: #22d3ee !important; }
+.cl-identityPreviewText { color: white !important; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}

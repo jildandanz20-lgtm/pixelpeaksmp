@@ -1,0 +1,134 @@
+// prisma/schema.prisma
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id          String   @id @default(cuid())
+  clerkId     String   @unique
+  username    String   @unique
+  email       String   @unique
+  avatarUrl   String?
+  role        Role     @default(MEMBER)
+  rank        Rank     @default(DEFAULT)
+  coins       Int      @default(0)
+  playtime    Int      @default(0)   // in minutes
+  kills       Int      @default(0)
+  balance     Float    @default(0.0) // in-game money
+  votes       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  transactions Transaction[]
+  orders       Order[]
+
+  @@map("users")
+}
+
+model Transaction {
+  id          String          @id @default(cuid())
+  userId      String
+  type        TransactionType
+  amount      Float
+  description String
+  status      PaymentStatus   @default(PENDING)
+  externalId  String?         // payment gateway ref
+  createdAt   DateTime        @default(now())
+
+  user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("transactions")
+}
+
+model Order {
+  id          String        @id @default(cuid())
+  userId      String
+  itemType    ItemType
+  itemId      String        // rank name or coin package id
+  itemName    String
+  price       Float
+  status      PaymentStatus @default(PENDING)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("orders")
+}
+
+model RankPackage {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  displayName String
+  price       Float
+  color       String
+  features    String[] // array of feature strings
+  sortOrder   Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  @@map("rank_packages")
+}
+
+model CoinPackage {
+  id          String   @id @default(cuid())
+  coins       Int
+  bonus       Int      @default(0)
+  price       Float
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  @@map("coin_packages")
+}
+
+model ServerStats {
+  id          String   @id @default(cuid())
+  onlinePlayers Int    @default(0)
+  maxPlayers  Int      @default(200)
+  isOnline    Boolean  @default(true)
+  updatedAt   DateTime @updatedAt
+
+  @@map("server_stats")
+}
+
+enum Role {
+  MEMBER
+  MODERATOR
+  ADMIN
+  OWNER
+}
+
+enum Rank {
+  DEFAULT
+  IRON
+  GOLD
+  DIAMOND
+  EMERALD
+}
+
+enum TransactionType {
+  COIN_TOPUP
+  RANK_PURCHASE
+  VOTE_REWARD
+  ADMIN_GRANT
+  REFUND
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+  REFUNDED
+}
+
+enum ItemType {
+  RANK
+  COIN
+}
