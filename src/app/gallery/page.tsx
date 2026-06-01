@@ -1,4 +1,4 @@
-// src/app/gallery/page.tsx
+'use client'
 import Navbar from '@/components/layout/Navbar'
 import BottomNav from '@/components/layout/BottomNav'
 
@@ -22,7 +22,6 @@ export default function GalleryPage() {
             <h1 className="text-3xl font-black mb-2">🖼️ Galeri Server</h1>
             <p className="text-slate-400 text-sm">Screenshot dan momen terbaik di PixelPeak SMP</p>
           </div>
-
           <div className="grid grid-cols-2 gap-2.5">
             {photos.map((p, i) => (
               <div
@@ -30,7 +29,6 @@ export default function GalleryPage() {
                 className={`relative rounded-2xl overflow-hidden group cursor-pointer ${i === 0 ? 'col-span-2 aspect-video' : 'aspect-square'}`}
                 style={{ border: '1px solid rgba(255,255,255,0.07)' }}
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={p.src}
                   alt={p.caption}
